@@ -83,7 +83,7 @@ def MF_ALS (train,test):
 
 
 
-def recommendations(model, userID, hotels, city):
+def recommendations(model, userID, hotels, city, budget):
     # Generate recommendations for all users
     userRecs = model.recommendForAllUsers(10)
 
@@ -94,7 +94,8 @@ def recommendations(model, userID, hotels, city):
 
     # Join recommendations with hotel data
     recsforArr = nrecommendations.join(hotels, nrecommendations.rec_hotelID == hotels.HotelID, "inner") \
-        .select('userID', 'rec_hotelID', 'Name', 'Price', col("Rating").alias("hotel_rating"), 'Benefits', 'Location')
+        .select('userID', 'rec_hotelID', 'Name', 'Price', col("Rating").alias("hotel_rating"), 'Benefits', 'Location') \
+        .filter(col('Price') <= budget)
 
     # Filter by userID and city, and sort by ratings
     recsforArr = recsforArr.filter(col('userID') == userID) \

@@ -11,7 +11,8 @@ def normalize_string(s):
     # Normalize to NFC, convert to lowercase, and strip whitespace
     return unicodedata.normalize('NFC', s).strip().lower()
 
-def user_profile(amenities_input, user_id, allhotels):
+def user_profile(amenities_input, user_id):
+    allhotels = pd.read_csv(r'E:\Grab Final Prj\combined_hotel_data2.csv' ,encoding='latin-1')
     amenities_map = {
     0: 'Bữa sáng',
     1: 'Wifi miễn phí',
@@ -53,26 +54,25 @@ def user_profile(amenities_input, user_id, allhotels):
             'city': row['Location']
         })
 
-    return user_rating_df
+    return pd.DataFrame(user_rating_df)
 
-if __name__ == "__main__":
-    num_users = 50  # Điều chỉnh số lượng người dùng nếu cần
-    num_amenities = 15  # Total number of amenities available
+# if __name__ == "__main__":
+#     num_users = 50  # Adjust the number of users as needed
+#     num_amenities = 15  # Total number of amenities available
     
-    # Generate random amenities input for each user
-    amenities_inputs = [random.sample(range(num_amenities), k=random.randint(1, num_amenities)) for _ in range(num_users)]
+#     # Generate random amenities input for each user
+#     amenities_inputs = [random.sample(range(num_amenities), k=random.randint(1, num_amenities)) for _ in range(num_users)]
     
-    allhotels = pd.read_csv(r'E:\Grab Final Prj\combined_hotel_data2.csv', encoding='utf-8')  # Try using utf-8 encoding
+#     allhotels = pd.read_csv(r'E:\Grab Final Prj\combined_hotel_data2.csv', encoding='utf-8')
     
-    all_user_ratings = []
+#     all_user_ratings = pd.DataFrame()
     
-    for i in range(num_users):
-        print(f"Generating profile for user {i + 1}")
-        user_ratings = user_profile(amenities_inputs[i], i + 1, allhotels)
-        all_user_ratings.extend(user_ratings)
+#     for i in range(num_users):
+#         print(f"Generating profile for user {i + 1}")
+#         user_ratings = user_profile(amenities_inputs[i], i + 1, allhotels)
+#         all_user_ratings = pd.concat([all_user_ratings, user_ratings], ignore_index=True)
     
-    user_rating_df = pd.DataFrame(all_user_ratings)
-    print(user_rating_df)
+#     print(all_user_ratings)
     
-    # Save the aggregated DataFrame to a new CSV file
-    user_rating_df.to_csv(r'E:\Grab Final Prj\TRAVELPLANNING\Hotels\user_profiling_updated.csv', index=False)
+#     # Save the aggregated DataFrame to a new CSV file
+#     all_user_ratings.to_csv(r'E:\Grab Final Prj\TRAVELPLANNING\Hotels\user_profiling_updated3.csv', index=False)
