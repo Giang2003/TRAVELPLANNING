@@ -24,15 +24,15 @@ if __name__ == '__main__':
     spendingActivity = recommend.budgetActivity
     print(listIDActivity , spendingActivity)
     ##input Hotel
-    # user_id = 1
-    # amenities_input = [0, 1, 2]  # Assuming the user prefers 'Bữa sáng', 'Wifi miễn phí', 'Bãi đậu xe'
-    # city = 'Đà Nẵng'
-    # budget = 100000  # Assuming the user has a budget of 100000
+    user_id = 1
+    amenities_input = [0, 1, 2]  # Assuming the user prefers 'Bữa sáng', 'Wifi miễn phí', 'Bãi đậu xe'
+    city = 'Đà Nẵng'
+    budget = 100000  # Assuming the user has a budget of 100000
 
-    # # Call the recommend_hotel function with the example input
-    # recommendations = recommend_hotel(user_id, amenities_input, city, budget)
+    # Call the recommend_hotel function with the example input
+    recommendations = recommend_hotel(user_id, amenities_input, city, budget)
     
-    # # Print the recommendations
-    # print(recommendations)
+    # Print the recommendations
+    print(recommendations)
 
     
