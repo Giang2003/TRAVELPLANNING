@@ -51,7 +51,7 @@ def clean_hotel_data(file_path):
     df.reset_index(drop=True, inplace=True)
     df['HotelID'] = df.index + 1
     # Load the existing combined hotel data
-    output_path = r'E:\Grab Final Prj\combined_hotel_data2.csv'
+    output_path = 'TRAVELPLANNING\Hotels\combined_hotel_data2.csv'
     combined_hotel_df = pd.read_csv(output_path)
     
     # Append the new cleaned hotel data

@@ -1,0 +1,11 @@
+pandas
+selenium
+requests
+unidecode
+webdriver-manager
+pyspark
+numpy
+Pillow
+unicodedata2
+geopy
+beautifulsoup4

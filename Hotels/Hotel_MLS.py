@@ -29,6 +29,8 @@ def initial_files (csvHotelInfo, csvRatingInfo):
     hotels = spark.read.csv(csvHotelInfo, header=True)
     ratingsSpark = spark.read.option("header", True) \
         .csv(csvRatingInfo)
+     # Cast the Price column to float
+    hotels = hotels.withColumn('Price', col('Price').cast('float'))
     # ratingsSpark.show()
     print(ratingsSpark.head())
     return ratingsSpark,hotels
@@ -86,23 +88,21 @@ def MF_ALS (train,test):
 def recommendations(model, userID, hotels, city, budget):
     # Generate recommendations for all users
     userRecs = model.recommendForAllUsers(10)
-
-    # Explode the recommendations to have one row per recommendation
     nrecommendations = userRecs \
         .withColumn("rec_exp", explode('recommendations')) \
         .select('userID', col("rec_exp.hotelID").alias("rec_hotelID"), col("rec_exp.rating").alias("rec_rating"))
 
-    # Join recommendations with hotel data
-    recsforArr = nrecommendations.join(hotels, nrecommendations.rec_hotelID == hotels.HotelID, "inner") \
-        .select('userID', 'rec_hotelID', 'Name', 'Price', col("Rating").alias("hotel_rating"), 'Benefits', 'Location') \
-        .filter(col('Price') <= budget)
+    recsforArr = nrecommendations.join(
+        hotels, nrecommendations.rec_hotelID == hotels.HotelID, "inner"
+    ).select(
+        'userID', 'rec_hotelID', 'Name', 'Price', col("Rating").alias("hotel_rating"), 'Benefits', 'Location'
+    )
 
-    # Filter by userID and city, and sort by ratings
-    recsforArr = recsforArr.filter(col('userID') == userID) \
-        .filter(col('Location') == city) \
-        .orderBy(col('rec_rating').desc())
-
-    # Show the recommendations
+    recsforArr = recsforArr.filter(col('userID') == userID).filter(col('Location') == city)
+    recsforArr = recsforArr.filter(col('Price') <= float(budget))
+    recsforArr = recsforArr.orderBy(col('rec_rating').desc())
     recsforArr.show()
+
+    return recsforArr
     
     return recsforArr
